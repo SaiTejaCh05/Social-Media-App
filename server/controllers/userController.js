@@ -189,8 +189,8 @@ export const sendConnectionRequest = async (req, res) => {
         //Check if users are already connected
         const connection = await Connection.findOne({
             $or: [
-                {rom_user_id: userId, to_user_id: id},
-                {rom_user_id: id, to_user_id: userId},
+                {from_user_id: userId, to_user_id: id},
+                {from_user_id: id, to_user_id: userId},
             ]
         })
 
@@ -255,7 +255,7 @@ export const acceptConnectionRequest = async (req, res) => {
         await user.save()
 
         const toUser = await User.findById(id);
-        user.connections.push(userId);
+        toUser.connections.push(userId);
         await toUser.save()
 
         connection.status = 'accepted'
